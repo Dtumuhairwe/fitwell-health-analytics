@@ -1,5 +1,8 @@
 # FitWell Health Analytics
 
+
+## Live Dashboard
+**[View the interactive dashboard here](https://dtumuhairwe.github.io/fitwell-health-analytics/dashboard/index.html)**
 An end-to-end health and fitness analytics pipeline built with Python, SQL, and Highcharts.
 
 ## Overview
