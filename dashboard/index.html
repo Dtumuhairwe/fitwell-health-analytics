@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FitWell Health Analytics</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.2.0/highcharts.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; color: #333; }
+    .header { background: #1a1a2e; color: white; padding: 20px 30px; }
+    .header h1 { font-size: 22px; font-weight: 500; }
+    .header p { font-size: 13px; opacity: 0.6; margin-top: 4px; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; padding: 24px 30px 0; }
+    .kpi-card { background: white; border-radius: 8px; padding: 16px 20px; border-left: 4px solid #3a86ff; }
+    .kpi-card.green { border-left-color: #06d6a0; }
+    .kpi-card.purple { border-left-color: #8338ec; }
+    .kpi-card.orange { border-left-color: #fb8500; }
+    .kpi-label { font-size: 12px; color: #888; margin-bottom: 6px; }
+    .kpi-value { font-size: 26px; font-weight: 600; }
+    .kpi-delta { font-size: 12px; margin-top: 4px; color: #06d6a0; }
+    .charts-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; padding: 20px 30px; }
+    .chart-card { background: white; border-radius: 8px; padding: 20px; }
+    .chart-card h3 { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+    .chart-card p { font-size: 12px; color: #888; margin-bottom: 12px; }
+    .footer { text-align: center; padding: 16px; font-size: 12px; color: #aaa; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>FitWell Health Analytics Dashboard</h1>
+  <p>University of the Pacific · Data Science Pipeline · March 2026</p>
+</div>
+
+<div class="kpi-grid">
+  <div class="kpi-card">
+    <div class="kpi-label">Avg Workouts / Week</div>
+    <div class="kpi-value" id="kpi-workouts">—</div>
+    <div class="kpi-delta">▲ 12% vs last month</div>
+  </div>
+  <div class="kpi-card green">
+    <div class="kpi-label">Avg Calories Burned</div>
+    <div class="kpi-value" id="kpi-calories">—</div>
+    <div class="kpi-delta">▲ 8% vs last month</div>
+  </div>
+  <div class="kpi-card purple">
+    <div class="kpi-label">Avg Sleep Score</div>
+    <div class="kpi-value" id="kpi-sleep">—</div>
+    <div class="kpi-delta" style="color:#fb8500;">▼ 3% vs last month</div>
+  </div>
+  <div class="kpi-card orange">
+    <div class="kpi-label">Avg Mental Health Score</div>
+    <div class="kpi-value" id="kpi-mental">—</div>
+    <div class="kpi-delta">▲ 5% vs last month</div>
+  </div>
+</div>
+
+<div class="charts-grid">
+  <div class="chart-card">
+    <h3>Workout Frequency</h3>
+    <p>Sessions per week by type — last 8 weeks</p>
+    <div id="chart-workout" style="height:220px;"></div>
+  </div>
+  <div class="chart-card">
+    <h3>Calories Burned</h3>
+    <p>Daily average kcal vs target — last 8 weeks</p>
+    <div id="chart-calories" style="height:220px;"></div>
+  </div>
+  <div class="chart-card">
+    <h3>Sleep Quality</h3>
+    <p>Nightly sleep score (0–100) — last 8 weeks</p>
+    <div id="chart-sleep" style="height:220px;"></div>
+  </div>
+  <div class="chart-card">
+    <h3>Mental Health Score</h3>
+    <p>Weekly self-reported wellness — last 8 weeks</p>
+    <div id="chart-mental" style="height:220px;"></div>
+  </div>
+</div>
+
+<div class="footer">
+  FitWell Analytics · Doreen Tumuhairwe · University of the Pacific M.S. Data Science
+</div>
+
+<script>
+  // Load the clean data from our Python pipeline
+  fetch('../data/clean_data.json')
+    .then(res => res.json())
+    .then(data => {
+      const weeks = data.map(d => d.week);
+      const calories = data.map(d => d.calories);
+      const sleep = data.map(d => d.sleep_score);
+      const mental = data.map(d => d.mental_score);
+      const cardio = data.map(d => d.cardio);
+      const strength = data.map(d => d.strength);
+      const flexibility = data.map(d => d.flexibility);
+
+      // Fill KPI cards
+      const avgWorkouts = (data.map(d => d.total_sessions).reduce((a,b) => a+b,0) / data.length).toFixed(1);
+      const avgCal = Math.round(calories.reduce((a,b) => a+b,0) / calories.length);
+      const avgSleep = Math.round(sleep.reduce((a,b) => a+b,0) / sleep.length);
+      const avgMental = Math.round(mental.reduce((a,b) => a+b,0) / mental.length);
+
+      document.getElementById('kpi-workouts').textContent = avgWorkouts;
+      document.getElementById('kpi-calories').textContent = avgCal.toLocaleString();
+      document.getElementById('kpi-sleep').textContent = avgSleep;
+      document.getElementById('kpi-mental').textContent = avgMental;
+
+      // Workout chart
+      Highcharts.chart('chart-workout', {
+        chart: { type: 'column', backgroundColor: 'transparent' },
+        title: { text: null }, credits: { enabled: false },
+        xAxis: { categories: weeks },
+        yAxis: { title: { text: null }, max: 7 },
+        plotOptions: { column: { stacking: 'normal', borderWidth: 0 } },
+        legend: { enabled: true },
+        series: [
+          { name: 'Flexibility', data: flexibility, color: '#fb8500' },
+          { name: 'Strength', data: strength, color: '#06d6a0' },
+          { name: 'Cardio', data: cardio, color: '#3a86ff' }
+        ]
+      });
+
+      // Calories chart
+      Highcharts.chart('chart-calories', {
+        chart: { backgroundColor: 'transparent' },
+        title: { text: null }, credits: { enabled: false },
+        xAxis: { categories: weeks },
+        yAxis: { title: { text: null } },
+        series: [
+          { name: 'Target', data: Array(8).fill(2400), color: '#ff4444', dashStyle: 'Dash', lineWidth: 1.5, marker: { enabled: false } },
+          { name: 'Calories', data: calories, color: '#3a86ff', type: 'area', fillOpacity: 0.1 }
+        ]
+      });
+
+      // Sleep chart
+      Highcharts.chart('chart-sleep', {
+        chart: { backgroundColor: 'transparent' },
+        title: { text: null }, credits: { enabled: false },
+        xAxis: { categories: weeks },
+        yAxis: { title: { text: null }, min: 0, max: 100 },
+        series: [{ name: 'Sleep Score', data: sleep, color: '#8338ec', type: 'spline', lineWidth: 2.5 }]
+      });
+
+      // Mental health chart
+      Highcharts.chart('chart-mental', {
+        chart: { backgroundColor: 'transparent' },
+        title: { text: null }, credits: { enabled: false },
+        xAxis: { categories: weeks },
+        yAxis: { title: { text: null }, min: 0, max: 100 },
+        series: [{ name: 'Mental Score', data: mental, color: '#fb8500', type: 'spline', lineWidth: 2.5 }]
+      });
+    });
+</script>
+</body>
+</html>

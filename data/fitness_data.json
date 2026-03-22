@@ -1,0 +1,128 @@
+{
+  "exercises": [
+    {
+      "id": 1,
+      "name": "Running",
+      "category": "Cardio"
+    },
+    {
+      "id": 2,
+      "name": "Push Ups",
+      "category": "Strength"
+    },
+    {
+      "id": 3,
+      "name": "Cycling",
+      "category": "Cardio"
+    },
+    {
+      "id": 4,
+      "name": "Squats",
+      "category": "Strength"
+    },
+    {
+      "id": 5,
+      "name": "Yoga",
+      "category": "Flexibility"
+    },
+    {
+      "id": 6,
+      "name": "Pull Ups",
+      "category": "Strength"
+    },
+    {
+      "id": 7,
+      "name": "Swimming",
+      "category": "Cardio"
+    },
+    {
+      "id": 8,
+      "name": "Plank",
+      "category": "Strength"
+    },
+    {
+      "id": 9,
+      "name": "Stretching",
+      "category": "Flexibility"
+    },
+    {
+      "id": 10,
+      "name": "Jump Rope",
+      "category": "Cardio"
+    }
+  ],
+  "weekly_logs": [
+    {
+      "week": "Week 1",
+      "cardio_sessions": 2,
+      "strength_sessions": 3,
+      "flexibility_sessions": 2,
+      "calories_burned": 2073,
+      "sleep_score": 76,
+      "mental_health_score": 78
+    },
+    {
+      "week": "Week 2",
+      "cardio_sessions": 1,
+      "strength_sessions": 3,
+      "flexibility_sessions": 0,
+      "calories_burned": 2480,
+      "sleep_score": 86,
+      "mental_health_score": 64
+    },
+    {
+      "week": "Week 3",
+      "cardio_sessions": 2,
+      "strength_sessions": 2,
+      "flexibility_sessions": 0,
+      "calories_burned": 2471,
+      "sleep_score": 65,
+      "mental_health_score": 65
+    },
+    {
+      "week": "Week 4",
+      "cardio_sessions": 3,
+      "strength_sessions": 1,
+      "flexibility_sessions": 2,
+      "calories_burned": 1915,
+      "sleep_score": 72,
+      "mental_health_score": 83
+    },
+    {
+      "week": "Week 5",
+      "cardio_sessions": 1,
+      "strength_sessions": 3,
+      "flexibility_sessions": 0,
+      "calories_burned": 2363,
+      "sleep_score": 61,
+      "mental_health_score": 59
+    },
+    {
+      "week": "Week 6",
+      "cardio_sessions": 1,
+      "strength_sessions": 2,
+      "flexibility_sessions": 0,
+      "calories_burned": 2085,
+      "sleep_score": 86,
+      "mental_health_score": 69
+    },
+    {
+      "week": "Week 7",
+      "cardio_sessions": 2,
+      "strength_sessions": 1,
+      "flexibility_sessions": 2,
+      "calories_burned": 1881,
+      "sleep_score": 69,
+      "mental_health_score": 75
+    },
+    {
+      "week": "Week 8",
+      "cardio_sessions": 1,
+      "strength_sessions": 1,
+      "flexibility_sessions": 2,
+      "calories_burned": 2350,
+      "sleep_score": 71,
+      "mental_health_score": 80
+    }
+  ]
+}
